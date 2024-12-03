@@ -1,0 +1,28 @@
+name: Using Actions
+description: Exercise of test with Node
+
+inputs:
+    work-dir:
+      description: The directory where the code is located.
+      required: true
+    node-version:
+        description: The version of Node.js to use.
+        required: true
+
+runs:
+    using: composite
+    steps:
+        - name: Setup Node
+          uses: actions/setup-node@v4
+          with:
+              node-version: ${{ inputs.node-version }}
+
+        - name: Install Dependencies
+          working-directory: ${{ inputs.work-dir }}
+          run: npm ci
+          shell: bash
+
+        - name: Run Unit Tests
+          working-directory: ${{ inputs.work-dir }}
+          run: npm run test
+          shell: bash
