@@ -1,25 +1,23 @@
-name: Using Actions
+name: 11 Custom Actions - Composite
+on:
+    workflow_dispatch:
 
-on: 
-  workflow_dispatch:
 env:
-  WORK_DIR: my-app
-  NODE_VERSION: 20.x
+    WORK_DIR: my-app
+    NODE_VERSION: 20.x
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ${{env.WORK_DIR}}
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{env.NODE_VERSION}}
-      - name: Install Dependencies
-        run: npm ci
-      - name: Run Unit Tests
-        run: npm run test
+    build:
+        runs-on: ubuntu-latest
+        defaults:
+            run:
+                working-directory: ${{env.WORK_DIR}}
+        steps:
+            - name: Checkout Code
+              uses: actions/checkout@v4
+
+            - name: Build Node
+              uses: ./.github/actions/composite-deps
+              with:
+                  node-version: ${{ env.NODE_VERSION }}
+                  work-dir: ${{ env.WORK_DIR }}
